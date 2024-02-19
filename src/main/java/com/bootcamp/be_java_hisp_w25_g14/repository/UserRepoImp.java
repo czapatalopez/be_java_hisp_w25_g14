@@ -12,6 +12,7 @@ import org.springframework.util.ResourceUtils;
 import java.io.File;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,6 +24,30 @@ public class UserRepoImp implements IUserRepo {
     public UserRepoImp() {
         this.userList = new ArrayList<>();
         loadUsers();
+    }
+
+    @Override
+    public List<User> listSellersFollowers(int id, String alphaOrder) {
+        Optional<User> optionalSellers = userList.stream().filter(x -> x.getUserId() == id && x.getIsSeller() == true).findFirst();
+
+        if (optionalSellers.isEmpty()){
+
+            throw new NotFoundException("Seller not found ");
+        }
+
+        User seller = optionalSellers.get();
+        List<User> followers = new ArrayList<>();
+        for(Integer key : seller.getFollowers()){
+            Optional<User> user = this.userList.stream().filter(user1 -> user1.getUserId().equals(key)).findFirst();
+            if (user.isPresent())
+                followers.add(user.get());
+        }
+
+        if (alphaOrder.equalsIgnoreCase("asc"))
+            return followers.stream().sorted(Comparator.comparing(User::getUserName)).toList();
+        else
+            return followers.stream().sorted(Comparator.comparing(User::getUserName).reversed()).toList();
+
     }
 
 

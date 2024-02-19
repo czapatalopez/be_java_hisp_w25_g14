@@ -3,6 +3,9 @@ package com.bootcamp.be_java_hisp_w25_g14.service;
 import com.bootcamp.be_java_hisp_w25_g14.dto.UserFollowersCountDto;
 
 import com.bootcamp.be_java_hisp_w25_g14.dto.FollowedListResponseDto;
+import com.bootcamp.be_java_hisp_w25_g14.entity.User;
+
+import java.util.List;
 
 public interface IUserService {
     void addFollowe(Integer userId, Integer userIdToFollow);
@@ -10,4 +13,6 @@ public interface IUserService {
 
     UserFollowersCountDto getUserFollowersCount(Integer userId);
     FollowedListResponseDto getFollowedByUser(Integer userId);
+
+    public FollowedListResponseDto listSellersFollowers(int id, String alphaOrder);
 }

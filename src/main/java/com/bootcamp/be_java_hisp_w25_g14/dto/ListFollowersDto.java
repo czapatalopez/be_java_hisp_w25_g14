@@ -5,11 +5,15 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.util.List;
+
+
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class FollowedListResponseDto {
-    private Integer user_id;
-    private String user_name;
-    private List<UserDataDto> followers;
+public class ListFollowersDto {
+
+    Integer user_Id;
+    String user_Name;
+    List<UserDto> followers;
+
 }
