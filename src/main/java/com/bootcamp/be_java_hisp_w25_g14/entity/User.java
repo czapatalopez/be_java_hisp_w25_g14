@@ -15,7 +15,7 @@ import java.util.List;
 public class User {
     Integer userId;
     String userName;
-    Boolean seller;
+    Boolean isSeller;
     List<Integer> followed;
     List<Integer> followers;
 }

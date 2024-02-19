@@ -32,7 +32,7 @@ public class UserServiceImp implements  IUserService{
     @Override
     public FollowedListResponseDto getFollowedByUser(Integer userId){
         List<userDataDto> userFollowed = this.userRepo.getFollowed(userId);
-        Optional<User> user = this.userRepo.findById(userId);
+        Optional<User> user = this.userRepo.findUserById(userId);
         return user.map(value -> new FollowedListResponseDto(
                 value.getUserId(),
                 value.getUserName(),

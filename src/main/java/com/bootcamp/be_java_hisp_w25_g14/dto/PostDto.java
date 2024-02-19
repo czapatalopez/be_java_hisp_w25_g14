@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
+import java.time.LocalDate;
 import java.util.Locale;
 
 @Data
@@ -17,7 +18,7 @@ public class PostDto {
 
     Integer user_id;
     Integer post_id;
-    Locale date;
+    String date;
     ProductDto product;
     Integer category;
     Double price;
