@@ -32,7 +32,7 @@ public class UserController {
         return new ResponseEntity<>(new MessageDto("Unfollow successfully", ""), HttpStatus.OK);
     }
 
-    @GetMapping("/users/{userId}/followed/list")
+    @GetMapping("/{userId}/followed/list")
     public ResponseEntity<?>getFollowed(@PathVariable Integer userId){
         return new ResponseEntity<>(this.userService.getFollowedByUser(userId),HttpStatus.OK);
     }

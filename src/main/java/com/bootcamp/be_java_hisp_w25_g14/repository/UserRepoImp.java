@@ -69,9 +69,7 @@ public class UserRepoImp implements IUserRepo {
     @Override
     public List<userDataDto> getFollowed(Integer userId){
         List<userDataDto> followedUsers = new ArrayList<>();
-        Optional<User> user = this.userList.stream()
-                .filter(usr -> usr.getUserId().equals(userId))
-                .findFirst();
+        Optional<User> user = findUserById(userId);
         if(user.isPresent()){
             List<Integer> followedList = user.get().getFollowed();
             if(followedList.isEmpty()){
