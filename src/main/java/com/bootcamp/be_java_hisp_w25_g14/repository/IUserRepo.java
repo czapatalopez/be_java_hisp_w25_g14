@@ -11,5 +11,4 @@ public interface IUserRepo {
   
     Optional<User> findUserById(Integer id);
 
-
 }

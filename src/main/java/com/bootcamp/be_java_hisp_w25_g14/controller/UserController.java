@@ -30,4 +30,9 @@ public class UserController {
         this.userService.removeFollow(userId,userIdToUnfollow);
         return new ResponseEntity<>(new MessageDto("Unfollow successfully",""), HttpStatus.OK);
     }
+
+    @GetMapping("/{userId}/followers/count")
+    public ResponseEntity<?> getUserFollowersCount(@PathVariable Integer userId) {
+        return new ResponseEntity<>(this.userService.getUserFollowersCount(userId),HttpStatus.OK);
+    }
 }
