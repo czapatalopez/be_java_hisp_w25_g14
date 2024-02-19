@@ -25,10 +25,16 @@ public class UserController {
         this.userService.addFollowe(userId,userIdToFollow);
         return new ResponseEntity<>(new MessageDto("Follow successfully",""), HttpStatus.OK);
     }
+
     @GetMapping("/{userId}/unfollow/{userIdToUnfollow}")
-    public ResponseEntity<?> removeFollow(@PathVariable Integer userId, @PathVariable Integer userIdToUnfollow){
-        this.userService.removeFollow(userId,userIdToUnfollow);
-        return new ResponseEntity<>(new MessageDto("Unfollow successfully",""), HttpStatus.OK);
+    public ResponseEntity<?> removeFollow(@PathVariable Integer userId, @PathVariable Integer userIdToUnfollow) {
+        this.userService.removeFollow(userId, userIdToUnfollow);
+        return new ResponseEntity<>(new MessageDto("Unfollow successfully", ""), HttpStatus.OK);
+    }
+
+    @GetMapping("/{userId}/followed/list")
+    public ResponseEntity<?>getFollowed(@PathVariable Integer userId){
+        return new ResponseEntity<>(this.userService.getFollowedByUser(userId),HttpStatus.OK);
     }
 
     @GetMapping("/{userId}/followers/count")

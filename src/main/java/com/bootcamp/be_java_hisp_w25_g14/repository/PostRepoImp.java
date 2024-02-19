@@ -27,6 +27,11 @@ public class PostRepoImp implements IPostRepo{
     }
 
     @Override
+    public List<Post> getPostsById(Integer id) {
+        return this.postList.stream().filter(post -> post.getUserId().equals(id)).toList();
+    }
+
+    @Override
     public List<Post> getAllPosts() {
         return postList;
     }
