@@ -12,5 +12,4 @@ public interface IUserRepo {
     Optional<User> findUserById(Integer id);
     public List<UserDataDto> getFollowed(Integer userId);
 
-
 }
