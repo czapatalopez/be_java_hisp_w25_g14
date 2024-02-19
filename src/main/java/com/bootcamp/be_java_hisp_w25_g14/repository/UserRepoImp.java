@@ -1,5 +1,7 @@
 package com.bootcamp.be_java_hisp_w25_g14.repository;
 
+import com.bootcamp.be_java_hisp_w25_g14.dto.UserDto;
+import com.bootcamp.be_java_hisp_w25_g14.dto.userDataDto;
 import com.bootcamp.be_java_hisp_w25_g14.entity.User;
 import com.bootcamp.be_java_hisp_w25_g14.exceptions.NoFoundException;
 import com.bootcamp.be_java_hisp_w25_g14.exceptions.FollowException;
@@ -63,6 +65,31 @@ public class UserRepoImp implements IUserRepo {
         if (user.isEmpty()){
             throw  new NoFoundException(message);
         }
+    }
+    @Override
+    public List<userDataDto> getFollowed(Integer userId){
+        List<userDataDto> followedUsers = new ArrayList<>();
+        Optional<User> user = findUserById(userId);
+        if(user.isPresent()){
+            List<Integer> followedList = user.get().getFollowed();
+            if(followedList.isEmpty()){
+                throw new NoFoundException("This user have no followed");
+            }
+            for(Integer followedId : followedList){
+                    Optional<User> followedUser = this.userList.stream()
+                        .filter(usr -> usr.getUserId().equals(followedId))
+                        .findFirst();
+                    if(followedUser.isPresent()){
+                        userDataDto followedUserDto = new userDataDto(
+                                followedUser.get().getUserId(),
+                                followedUser.get().getUserName());
+                        followedUsers.add(followedUserDto);
+                    }
+            }
+            return followedUsers;
+        }
+        throw  new NoFoundException("Unable to find user");
+
     }
 
     @Override

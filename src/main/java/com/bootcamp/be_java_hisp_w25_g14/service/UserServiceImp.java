@@ -1,8 +1,15 @@
 package com.bootcamp.be_java_hisp_w25_g14.service;
 
+import com.bootcamp.be_java_hisp_w25_g14.dto.FollowedListResponseDto;
+import com.bootcamp.be_java_hisp_w25_g14.dto.UserDto;
+import com.bootcamp.be_java_hisp_w25_g14.dto.userDataDto;
+import com.bootcamp.be_java_hisp_w25_g14.entity.User;
 import com.bootcamp.be_java_hisp_w25_g14.repository.IUserRepo;
 import com.bootcamp.be_java_hisp_w25_g14.repository.UserRepoImp;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class UserServiceImp implements  IUserService{
@@ -18,8 +25,18 @@ public class UserServiceImp implements  IUserService{
         this.userRepo.addFollower(userId,userIdToFollow);
     }
 
-    @Override
-    public void removeFollow(Integer userId, Integer userIdToUnfollow) {
+    @Override    public void removeFollow(Integer userId, Integer userIdToUnfollow) {
         this.userRepo.removeFollow(userId, userIdToUnfollow);
+    }
+
+    @Override
+    public FollowedListResponseDto getFollowedByUser(Integer userId){
+        List<userDataDto> userFollowed = this.userRepo.getFollowed(userId);
+        Optional<User> user = this.userRepo.findUserById(userId);
+        return user.map(value -> new FollowedListResponseDto(
+                value.getUserId(),
+                value.getUserName(),
+                userFollowed
+        )).orElse(null);
     }
 }
