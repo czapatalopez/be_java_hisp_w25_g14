@@ -1,4 +1,4 @@
-package com.bootcamp.be_java_hisp_w25_g14.entity;
+package com.bootcamp.be_java_hisp_w25_g14.dto;
 
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -10,11 +10,14 @@ import lombok.experimental.FieldDefaults;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Product {
-    Integer productId;
-    String productName;
-    String type;
-    String brand;
-    String color;
-    String notes;
+public class ProductDto {
+
+     Integer product_id;
+     String product_name;
+     String type;
+     String brand;
+     String color;
+     String notes;
+
+
 }
