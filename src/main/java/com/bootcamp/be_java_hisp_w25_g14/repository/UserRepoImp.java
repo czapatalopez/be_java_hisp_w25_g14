@@ -33,28 +33,46 @@ public class UserRepoImp implements IUserRepo {
         Optional<User> follower = this.userList.stream().filter(user -> user.getUserId().equals(userId)).findFirst();
         Optional<User> toFollow = this.userList.stream().filter(user -> user.getUserId().equals(userIdToFollow)).findFirst();
 
-        if (follower.isEmpty())
-            throw  new NoFoundException("Unable to find user");
-        if (toFollow.isEmpty())
-            throw  new NoFoundException("Unable to find user to follow");
+        validateIfUserExists(follower,"Unable to find user");
+        validateIfUserExists(follower,"Unable to find user to follow");
 
         if(follower.get().getFollowed().contains(userIdToFollow) || toFollow.get().getFollowers().contains(userId))
             throw new FollowException("Already follow");
+
         validateIsSeller(toFollow.get());
-
-        System.out.println("follower = " + follower.get());
-        System.out.println("followed = " + toFollow.get());
-
         follower.get().getFollowed().add(userIdToFollow);
         toFollow.get().getFollowers().add(userId);
-        System.out.println("follower = " + follower.get());
-        System.out.println("followed = " + toFollow.get());
+
+    }
+
+    @Override
+    public void removeFollow(Integer userId, Integer userIdToUnfollow) {
+        Optional<User> follower = this.userList.stream().filter(user -> user.getUserId().equals(userId)).findFirst();
+        Optional<User> toFollow = this.userList.stream().filter(user -> user.getUserId().equals(userIdToUnfollow)).findFirst();
+
+        validateIfUserExists(follower,"Unable to find user");
+        validateIfUserExists(follower,"Unable to find user to follow");
+
+        if(!follower.get().getFollowed().contains(userIdToUnfollow) || !toFollow.get().getFollowers().contains(userId))
+            throw new FollowException("Can't unfollow, You don't follow this user");
+
+        validateIsSeller(toFollow.get());
+        follower.get().getFollowed().remove(userIdToUnfollow);
+        toFollow.get().getFollowers().remove(userId);
+    }
+
+    private void validateIfUserExists(Optional<User> user, String message){
+        if (user.isEmpty()){
+            throw  new NoFoundException(message);
+        }
     }
 
     private void validateIsSeller(User user){
         if (!user.getSeller())
             throw  new FollowException("The user to follow isn't seller");
     }
+
+
 
     private void loadUsers()  {
         try{
