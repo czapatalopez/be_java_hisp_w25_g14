@@ -35,11 +35,10 @@ public class UserRepoImp implements IUserRepo {
 
         validateIfUserExists(follower,"Unable to find user");
         validateIfUserExists(follower,"Unable to find user to follow");
-
+        validateIsSeller(toFollow.get());
         if(follower.get().getFollowed().contains(userIdToFollow) || toFollow.get().getFollowers().contains(userId))
             throw new FollowException("Already follow");
 
-        validateIsSeller(toFollow.get());
         follower.get().getFollowed().add(userIdToFollow);
         toFollow.get().getFollowers().add(userId);
 
@@ -56,7 +55,6 @@ public class UserRepoImp implements IUserRepo {
         if(!follower.get().getFollowed().contains(userIdToUnfollow) || !toFollow.get().getFollowers().contains(userId))
             throw new FollowException("Can't unfollow, You don't follow this user");
 
-        validateIsSeller(toFollow.get());
         follower.get().getFollowed().remove(userIdToUnfollow);
         toFollow.get().getFollowers().remove(userId);
     }
