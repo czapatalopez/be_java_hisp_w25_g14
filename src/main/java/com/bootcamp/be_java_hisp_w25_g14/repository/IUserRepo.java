@@ -6,6 +6,10 @@ import java.util.Optional;
 
 public interface IUserRepo {
     void addFollower(Integer userId, Integer userIdToFollow);
+
+    void removeFollow(Integer userID, Integer userIdToUnfollow);
+  
     Optional<User> findUserById(Integer id);
+
 
 }
