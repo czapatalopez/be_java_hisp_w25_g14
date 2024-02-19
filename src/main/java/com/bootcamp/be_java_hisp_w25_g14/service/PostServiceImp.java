@@ -12,6 +12,7 @@ import com.bootcamp.be_java_hisp_w25_g14.exceptions.NotValidDateException;
 import com.bootcamp.be_java_hisp_w25_g14.repository.IPostRepo;
 import com.bootcamp.be_java_hisp_w25_g14.repository.IUserRepo;
 import com.bootcamp.be_java_hisp_w25_g14.utils.ApiMapper;
+import com.bootcamp.be_java_hisp_w25_g14.utils.HelperFunctions;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -89,6 +90,16 @@ public class PostServiceImp implements IPostService{
         }
 
         if(postsOfLastTwoWeeks.isEmpty()) throw new NotFoundException("There are no posts within the last two weeks");
+
+
+        /*
+        Sorteamos la lista si el usuario lo especifica (ascendente o descendente)
+         */
+        if(sorted!=null && sorted.equals("date_asc")){
+            return new UserFollowedPostDto(id,HelperFunctions.sortPostsByDateAscending(postsOfLastTwoWeeks));
+        } else if (sorted!=null && sorted.equals("date_desc")) {
+            return new UserFollowedPostDto(id,HelperFunctions.sortPostsByDateDescending(postsOfLastTwoWeeks));
+        }
 
         return new UserFollowedPostDto(id,postsOfLastTwoWeeks);
     }
