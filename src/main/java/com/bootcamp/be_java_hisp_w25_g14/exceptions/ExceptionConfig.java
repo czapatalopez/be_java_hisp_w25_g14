@@ -18,4 +18,14 @@ public class ExceptionConfig {
     public ResponseEntity<?> follow(FollowException ex){
         return ResponseEntity.status(400).body(new MessageDto(ex.getMessage(), ""));
     }
+
+    @ExceptionHandler(NotSellerException.class)
+    public ResponseEntity<?> notASeller(NotSellerException ex){
+        return ResponseEntity.status(400).body(new MessageDto(ex.getMessage(), ""));
+    }
+
+    @ExceptionHandler(NotValidDateException.class)
+    public ResponseEntity<?> notValidDate(NotValidDateException ex){
+        return ResponseEntity.status(400).body(new MessageDto(ex.getMessage(), ""));
+    }
 }

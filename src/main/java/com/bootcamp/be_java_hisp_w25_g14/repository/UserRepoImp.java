@@ -51,14 +51,20 @@ public class UserRepoImp implements IUserRepo {
         System.out.println("followed = " + toFollow.get());
     }
 
+    @Override
+    public Optional<User> findUserById(Integer id) {
+        return this.userList.stream().filter(user -> user.getUserId().equals(id)).findFirst();
+    }
+
     private void validateIsSeller(User user){
-        if (!user.getSeller())
+        if (!user.getIsSeller())
             throw  new FollowException("The user to follow isn't seller");
     }
 
     private void loadUsers()  {
         try{
             ObjectMapper mapper = new ObjectMapper();
+
             File jsonFile=null;
             jsonFile = ResourceUtils.getFile("classpath:user.json");
             this.userList = mapper.readValue(jsonFile, new TypeReference<List<User>>() {

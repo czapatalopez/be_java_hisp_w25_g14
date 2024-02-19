@@ -1,11 +1,13 @@
 package com.bootcamp.be_java_hisp_w25_g14.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
+import java.time.LocalDate;
 import java.util.Locale;
 
 @Data
@@ -15,7 +17,7 @@ import java.util.Locale;
 public class Post {
     Integer postId;
     Integer userId;
-    Locale date;
+    String date;
     Product product;
     Integer category;
     Double price;

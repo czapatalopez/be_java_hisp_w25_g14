@@ -4,6 +4,8 @@ import com.bootcamp.be_java_hisp_w25_g14.entity.Post;
 import com.bootcamp.be_java_hisp_w25_g14.entity.Product;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
 import org.springframework.stereotype.Repository;
 import org.springframework.util.ResourceUtils;
 
@@ -35,6 +37,8 @@ public class PostRepoImp implements IPostRepo{
     private void loadPosts()  {
         try{
             ObjectMapper mapper = new ObjectMapper();
+            mapper.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+            mapper.registerModule(new JavaTimeModule());
             File jsonFile=null;
             jsonFile = ResourceUtils.getFile("classpath:post.json");
             this.postList = mapper.readValue(jsonFile, new TypeReference<List<Post>>() {
