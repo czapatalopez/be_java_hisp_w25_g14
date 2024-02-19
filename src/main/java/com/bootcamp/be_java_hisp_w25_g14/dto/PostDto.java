@@ -1,5 +1,6 @@
-package com.bootcamp.be_java_hisp_w25_g14.entity;
+package com.bootcamp.be_java_hisp_w25_g14.dto;
 
+import com.bootcamp.be_java_hisp_w25_g14.entity.Product;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -12,11 +13,13 @@ import java.util.Locale;
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Post {
-    Integer postId;
-    Integer userId;
+public class PostDto {
+
+    Integer user_id;
+    Integer post_id;
     Locale date;
-    Product product;
+    ProductDto product;
     Integer category;
     Double price;
+
 }
