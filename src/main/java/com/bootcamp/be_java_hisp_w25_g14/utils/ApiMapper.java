@@ -27,12 +27,12 @@ public class ApiMapper {
 
         Post post = new Post();
 
-        post.setPostId(post.getPostId());
+        post.setPostId(postDto.getPost_id());
         post.setUserId(postDto.getUser_id());
-        post.setDate(post.getDate());
+        post.setDate(postDto.getDate());
         post.setProduct(convertToProductEntity(postDto.getProduct()));
-        post.setCategory(post.getCategory());
-        post.setPrice(post.getPrice());
+        post.setCategory(postDto.getCategory());
+        post.setPrice(postDto.getPrice());
 
         return post;
 
