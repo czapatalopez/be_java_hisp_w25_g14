@@ -53,4 +53,9 @@ public class UserController {
     public ResponseEntity<?>getFollowed(@PathVariable Integer userId){
         return new ResponseEntity<>(this.userService.getFollowedByUser(userId),HttpStatus.OK);
     }
+
+    @GetMapping("/{userId}/followers/count")
+    public ResponseEntity<?> getUserFollowersCount(@PathVariable Integer userId) {
+        return new ResponseEntity<>(this.userService.getUserFollowersCount(userId),HttpStatus.OK);
+    }
 }
