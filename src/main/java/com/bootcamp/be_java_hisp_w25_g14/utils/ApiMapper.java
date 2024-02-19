@@ -1,11 +1,32 @@
 package com.bootcamp.be_java_hisp_w25_g14.utils;
 
-import com.bootcamp.be_java_hisp_w25_g14.dto.PostDto;
-import com.bootcamp.be_java_hisp_w25_g14.dto.ProductDto;
+import com.bootcamp.be_java_hisp_w25_g14.dto.*;
 import com.bootcamp.be_java_hisp_w25_g14.entity.Post;
 import com.bootcamp.be_java_hisp_w25_g14.entity.Product;
+import com.bootcamp.be_java_hisp_w25_g14.entity.User;
+
+import java.util.List;
 
 public class ApiMapper {
+
+    public  static FollowedListResponseDto listSellersFollowers(User user,List<User> usersFollowers){
+        FollowedListResponseDto followedDto = new FollowedListResponseDto();
+
+        followedDto.setUser_id(user.getUserId());
+        followedDto.setUser_name(user.getUserName());
+
+        followedDto.setFollowers(usersFollowers.stream().map(user1 -> convertToUserDataDto(user1)).toList());
+
+
+
+    return followedDto;
+
+    }
+
+    public static UserDataDto convertToUserDataDto(User user){
+
+        return  new UserDataDto(user.getUserId(),user.getUserName());
+    }
 
 
     public static PostDto convertToPostDto(Post post){
