@@ -5,17 +5,15 @@ import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.servlet.NoHandlerFoundException;
-import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 @ControllerAdvice(annotations = RestController.class)
 public class ExceptionConfig {
 
-    @ExceptionHandler(NoFoundException.class)
-    public ResponseEntity<?> noFound(NoFoundException ex){
+    @ExceptionHandler(NotFoundException.class)
+    public ResponseEntity<?> noFound(NotFoundException ex){
         return ResponseEntity.status(400).body(new MessageDto(ex.getMessage(), ""));
     }
     @ExceptionHandler(FollowException.class)

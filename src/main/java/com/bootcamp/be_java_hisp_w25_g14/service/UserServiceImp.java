@@ -1,11 +1,9 @@
 package com.bootcamp.be_java_hisp_w25_g14.service;
 
 import com.bootcamp.be_java_hisp_w25_g14.dto.FollowedListResponseDto;
-import com.bootcamp.be_java_hisp_w25_g14.dto.UserDto;
-import com.bootcamp.be_java_hisp_w25_g14.dto.userDataDto;
+import com.bootcamp.be_java_hisp_w25_g14.dto.UserDataDto;
 import com.bootcamp.be_java_hisp_w25_g14.entity.User;
 import com.bootcamp.be_java_hisp_w25_g14.repository.IUserRepo;
-import com.bootcamp.be_java_hisp_w25_g14.repository.UserRepoImp;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -31,7 +29,7 @@ public class UserServiceImp implements  IUserService{
 
     @Override
     public FollowedListResponseDto getFollowedByUser(Integer userId){
-        List<userDataDto> userFollowed = this.userRepo.getFollowed(userId);
+        List<UserDataDto> userFollowed = this.userRepo.getFollowed(userId);
         Optional<User> user = this.userRepo.findUserById(userId);
         return user.map(value -> new FollowedListResponseDto(
                 value.getUserId(),

@@ -6,7 +6,7 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class userDataDto {
+public class UserDataDto {
 
     private Integer user_id;
     private String user_name;
