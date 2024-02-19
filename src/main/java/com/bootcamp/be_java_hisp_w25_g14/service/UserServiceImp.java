@@ -17,4 +17,9 @@ public class UserServiceImp implements  IUserService{
     public void addFollowe(Integer userId, Integer userIdToFollow) {
         this.userRepo.addFollower(userId,userIdToFollow);
     }
+
+    @Override
+    public void removeFollow(Integer userId, Integer userIdToUnfollow) {
+        this.userRepo.removeFollow(userId, userIdToUnfollow);
+    }
 }
