@@ -27,7 +27,7 @@ public class UserRepoImp implements IUserRepo {
     }
 
     @Override
-    public List<User> listSellersFollowers(int id, String alphaOrder) {
+    public List<User> listSellersFollowers(int id, String order) {
         Optional<User> optionalSellers = userList.stream().filter(x -> x.getUserId() == id && x.getIsSeller() == true).findFirst();
 
         if (optionalSellers.isEmpty()){
@@ -43,7 +43,7 @@ public class UserRepoImp implements IUserRepo {
                 followers.add(user.get());
         }
 
-        if (alphaOrder.equalsIgnoreCase("asc"))
+        if (order.equalsIgnoreCase("name_asc"))
             return followers.stream().sorted(Comparator.comparing(User::getUserName)).toList();
         else
             return followers.stream().sorted(Comparator.comparing(User::getUserName).reversed()).toList();

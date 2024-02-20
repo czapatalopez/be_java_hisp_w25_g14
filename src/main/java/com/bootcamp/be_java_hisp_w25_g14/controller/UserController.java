@@ -1,16 +1,10 @@
 package com.bootcamp.be_java_hisp_w25_g14.controller;
 
-import com.bootcamp.be_java_hisp_w25_g14.dto.FollowedListResponseDto;
 import com.bootcamp.be_java_hisp_w25_g14.dto.MessageDto;
 import com.bootcamp.be_java_hisp_w25_g14.service.IUserService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import java.util.List;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/users")
@@ -18,19 +12,12 @@ public class UserController {
 
     private IUserService userService;
 
-    @GetMapping("/{id}/followers/list/{alphaOrder}")
-    public ResponseEntity<?> listSellersFollower(@PathVariable int id,
-                                                  @PathVariable String alphaOrder){
-
-
-
-        return new ResponseEntity<>(this.userService.listSellersFollowers(id,alphaOrder), HttpStatus.OK);
-    }
-
     @GetMapping("/{id}/followers/list")
-    public ResponseEntity<?> listSellersFollowers(@PathVariable int id){
+    public ResponseEntity<?> listSellersFollower(@PathVariable int id,
+                                                  @RequestParam String order){
 
-        return new ResponseEntity<>(this.userService.listSellersFollowers(id,""), HttpStatus.OK);
+
+        return new ResponseEntity<>(this.userService.listSellersFollowers(id, order), HttpStatus.OK);
     }
 
     public UserController(IUserService userService) {

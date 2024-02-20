@@ -27,14 +27,14 @@ public class UserServiceImp implements IUserService {
         this.userRepo = userRepo;
     }
 
-    public FollowedListResponseDto listSellersFollowers(int id,String alphaOrder){
+    public FollowedListResponseDto listSellersFollowers(int id,String order){
         Optional<User> userFollower = userRepo.findUserById(id);
 
         if (userFollower.isEmpty()) throw new NotFoundException("The user does not exists");
 
         if(!userFollower.get().getIsSeller()) throw new NotSellerException("the user is not a seller");
 
-        return ApiMapper.listSellersFollowers(userFollower.get(),userRepo.listSellersFollowers(id,alphaOrder));
+        return ApiMapper.listSellersFollowers(userFollower.get(),userRepo.listSellersFollowers(id,order));
     }
 
     @Override

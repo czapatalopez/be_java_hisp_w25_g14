@@ -14,5 +14,5 @@ public interface IUserService {
     UserFollowersCountDto getUserFollowersCount(Integer userId);
     FollowedListResponseDto getFollowedByUser(Integer userId);
 
-    public FollowedListResponseDto listSellersFollowers(int id, String alphaOrder);
+    public FollowedListResponseDto listSellersFollowers(int id, String order);
 }
