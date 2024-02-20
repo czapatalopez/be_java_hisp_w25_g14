@@ -101,6 +101,6 @@ public class PostServiceImp implements IPostService{
             return new UserFollowedPostDto(id,HelperFunctions.sortPostsByDateDescending(postsOfLastTwoWeeks));
         }
 
-        return new UserFollowedPostDto(id,postsOfLastTwoWeeks);
+        return new UserFollowedPostDto(id,HelperFunctions.sortPostsByDateDescending(postsOfLastTwoWeeks));
     }
 }
