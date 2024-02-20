@@ -83,7 +83,8 @@ public class PostServiceImp implements IPostService{
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
                 LocalDate postDate = LocalDate.parse(post.getDate(), formatter);
 
-                return today.minusWeeks(2).isBefore(postDate);
+                return postDate.isBefore(today.plusDays(1)) && postDate.isAfter(today.minusDays(15));
+
             }).toList();
 
             postsOfLastTwoWeeks.addAll(userPosts.stream().map(ApiMapper::convertToPostDto).toList());
