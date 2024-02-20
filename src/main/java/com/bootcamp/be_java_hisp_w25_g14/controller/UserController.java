@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping("/users")
 public class UserController {
 
-    private IUserService userService;
+    private final IUserService userService;
 
     @GetMapping("/{id}/followers/list")
     public ResponseEntity<?> listSellersFollower(@PathVariable int id,

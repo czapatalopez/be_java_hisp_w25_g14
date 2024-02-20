@@ -1,11 +1,8 @@
 package com.bootcamp.be_java_hisp_w25_g14.service;
 
-import com.bootcamp.be_java_hisp_w25_g14.dto.MessageDto;
-import com.bootcamp.be_java_hisp_w25_g14.dto.PostDto;
-import com.bootcamp.be_java_hisp_w25_g14.dto.UserDataDto;
+import com.bootcamp.be_java_hisp_w25_g14.dto.*;
 import com.bootcamp.be_java_hisp_w25_g14.entity.Post;
 import com.bootcamp.be_java_hisp_w25_g14.entity.User;
-import com.bootcamp.be_java_hisp_w25_g14.dto.UserFollowedPostDto;
 import com.bootcamp.be_java_hisp_w25_g14.exceptions.NotFoundException;
 import com.bootcamp.be_java_hisp_w25_g14.exceptions.NotSellerException;
 import com.bootcamp.be_java_hisp_w25_g14.exceptions.NotValidDateException;
@@ -25,8 +22,8 @@ import java.util.stream.Collectors;
 @Service
 public class PostServiceImp implements IPostService{
 
-    private IPostRepo postRepository;
-    private IUserRepo userRepository;
+    private final IPostRepo postRepository;
+    private final IUserRepo userRepository;
 
     public PostServiceImp(IPostRepo postRepository, IUserRepo userRepository) {
         this.postRepository = postRepository;
@@ -34,7 +31,7 @@ public class PostServiceImp implements IPostService{
     }
 
     @Override
-    public MessageDto savePost(PostDto postDto) {
+    public MessageDto savePost(PostDto postDto, boolean isPromo) {
         Optional<User> isUserExists = userRepository.findUserById(postDto.getUser_id());
 
         if (isUserExists.isEmpty()) throw new NotFoundException("The user does not exist");
@@ -47,6 +44,11 @@ public class PostServiceImp implements IPostService{
             throw new NotValidDateException("the date is not valid");
         }
 
+        if(!isPromo){
+            postDto.setDiscount(0.0);
+            postDto.setHas_promo(false);
+        }
+
         postRepository.savePost(ApiMapper.convertToPostEntity(postDto));
 
         return new MessageDto("Post added","The post was added succesfully");
@@ -55,7 +57,7 @@ public class PostServiceImp implements IPostService{
 
     @Override
     public List<PostDto> getAllPosts() {
-        List<PostDto> postDtoList = postRepository.getAllPosts().stream().map(post -> ApiMapper.convertToPostDto(post)).collect(Collectors.toList());
+        List<PostDto> postDtoList = postRepository.getAllPosts().stream().map(ApiMapper::convertToPostDto).collect(Collectors.toList());
 
         if (postDtoList.isEmpty()) throw new NotFoundException("There is no posts");
 
@@ -83,7 +85,7 @@ public class PostServiceImp implements IPostService{
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy");
                 LocalDate postDate = LocalDate.parse(post.getDate(), formatter);
 
-                return today.minusWeeks(2).isBefore(postDate);
+                return today.minusWeeks(2).isAfter(postDate);
             }).toList();
 
             postsOfLastTwoWeeks.addAll(userPosts.stream().map(ApiMapper::convertToPostDto).toList());
@@ -102,5 +104,21 @@ public class PostServiceImp implements IPostService{
         }
 
         return new UserFollowedPostDto(id,HelperFunctions.sortPostsByDateDescending(postsOfLastTwoWeeks));
+    }
+
+    @Override
+    public PromoProductsAmountDto getAmountOfPromoProductsById(Integer id) {
+
+        if(id == null) throw new NotFoundException("ID is required");
+
+        Optional<User> isUserExists = userRepository.findUserById(id);
+        if (isUserExists.isEmpty()) throw new NotFoundException("The user does not exist");
+
+        List<Post> userPosts = postRepository.getPostsById(id);
+        if(userPosts.isEmpty()) throw new NotFoundException("There are no posts by this vendor");
+
+        Integer promoProductsCount = Math.toIntExact(userPosts.stream().filter(Post::isHasPromo).count());
+
+        return new PromoProductsAmountDto(id,isUserExists.get().getUserName(),promoProductsCount);
     }
 }

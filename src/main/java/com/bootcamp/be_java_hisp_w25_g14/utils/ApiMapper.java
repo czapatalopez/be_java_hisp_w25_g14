@@ -32,12 +32,18 @@ public class ApiMapper {
     public static PostDto convertToPostDto(Post post){
 
         PostDto postDto = new PostDto();
-        postDto.setPost_id(post.getPostId());
         postDto.setUser_id(post.getUserId());
         postDto.setDate(post.getDate());
         postDto.setProduct(convertToProductDto(post.getProduct()));
         postDto.setCategory(post.getCategory());
         postDto.setPrice(post.getPrice());
+        postDto.setHas_promo(post.isHasPromo());
+
+        if(post.getDiscount() != null){
+            postDto.setDiscount(post.getDiscount());
+        }else{
+            postDto.setDiscount(0.0);
+        }
 
         return postDto;
 
@@ -51,6 +57,13 @@ public class ApiMapper {
         post.setProduct(convertToProductEntity(postDto.getProduct()));
         post.setCategory(postDto.getCategory());
         post.setPrice(postDto.getPrice());
+        post.setHasPromo(postDto.isHas_promo());
+
+        if(postDto.getDiscount() != null){
+            post.setDiscount(postDto.getDiscount());
+        }else{
+            post.setDiscount(0.0);
+        }
 
         return post;
 

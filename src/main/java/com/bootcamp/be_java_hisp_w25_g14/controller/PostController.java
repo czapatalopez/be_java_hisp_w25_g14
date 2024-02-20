@@ -1,13 +1,10 @@
 package com.bootcamp.be_java_hisp_w25_g14.controller;
 
-import com.bootcamp.be_java_hisp_w25_g14.dto.MessageDto;
 import com.bootcamp.be_java_hisp_w25_g14.dto.PostDto;
-import com.bootcamp.be_java_hisp_w25_g14.dto.UserFollowedPostDto;
 import com.bootcamp.be_java_hisp_w25_g14.service.IPostService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import java.util.List;
 
 
 @RestController
@@ -33,7 +30,17 @@ public class PostController {
 
     @PostMapping("/post")
     public ResponseEntity<?> savePost(@RequestBody PostDto postDto){
-        return new ResponseEntity<>(postService.savePost(postDto), HttpStatus.OK);
+        return new ResponseEntity<>(postService.savePost(postDto,false), HttpStatus.OK);
+    }
+
+    @PostMapping("/promo-post")
+    public ResponseEntity<?> createPromoPost(@RequestBody PostDto promoPostDto){
+        return new ResponseEntity<>(postService.savePost(promoPostDto, true),HttpStatus.OK);
+    }
+
+    @GetMapping("/promo-post/count")
+    public ResponseEntity<?> getAmountOfPromoProductsById(@RequestParam Integer user_id){
+        return new ResponseEntity<>(postService.getAmountOfPromoProductsById(user_id), HttpStatus.OK);
     }
 
 
