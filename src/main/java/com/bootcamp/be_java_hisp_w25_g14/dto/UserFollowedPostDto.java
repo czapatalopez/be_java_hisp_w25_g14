@@ -15,5 +15,5 @@ import java.util.List;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserFollowedPostDto {
     Integer user_id;
-    List<Post> posts;
+    List<PostDto> posts;
 }

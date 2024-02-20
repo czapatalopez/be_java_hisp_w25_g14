@@ -64,7 +64,7 @@ public class PostServiceImp implements IPostService{
 
     @Override
     public UserFollowedPostDto getFollowedPostsByUserLastTwoWeeks(Integer id, String sorted) {
-        List<Post> postsOfLastTwoWeeks = new ArrayList<>();
+        List<PostDto> postsOfLastTwoWeeks = new ArrayList<>();
         List<UserDataDto> followedUsers = userRepository.getFollowed(id);
 
         for(UserDataDto user : followedUsers){
@@ -86,7 +86,7 @@ public class PostServiceImp implements IPostService{
                 return today.minusWeeks(2).isBefore(postDate);
             }).toList();
 
-            postsOfLastTwoWeeks.addAll(userPosts);
+            postsOfLastTwoWeeks.addAll(userPosts.stream().map(ApiMapper::convertToPostDto).toList());
         }
 
         if(postsOfLastTwoWeeks.isEmpty()) throw new NotFoundException("There are no posts within the last two weeks");
