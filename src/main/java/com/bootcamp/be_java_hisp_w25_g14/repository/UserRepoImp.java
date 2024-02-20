@@ -60,7 +60,7 @@ public class UserRepoImp implements IUserRepo {
         Optional<User> toFollow = this.userList.stream().filter(user -> user.getUserId().equals(userIdToFollow)).findFirst();
 
         validateIfUserExists(follower,"Unable to find user");
-        validateIfUserExists(follower,"Unable to find user to follow");
+        validateIfUserExists(toFollow,"Unable to find user to follow");
         validateIsSeller(toFollow.get());
         if(follower.get().getFollowed().contains(userIdToFollow) || toFollow.get().getFollowers().contains(userId))
             throw new FollowException("Already follow");
@@ -76,7 +76,7 @@ public class UserRepoImp implements IUserRepo {
         Optional<User> toFollow = this.userList.stream().filter(user -> user.getUserId().equals(userIdToUnfollow)).findFirst();
 
         validateIfUserExists(follower,"Unable to find user");
-        validateIfUserExists(follower,"Unable to find user to follow");
+        validateIfUserExists(toFollow,"Unable to find user to follow");
 
         if(!follower.get().getFollowed().contains(userIdToUnfollow) || !toFollow.get().getFollowers().contains(userId))
             throw new FollowException("Can't unfollow, You don't follow this user");
