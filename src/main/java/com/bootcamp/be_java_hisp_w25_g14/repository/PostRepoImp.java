@@ -16,14 +16,20 @@ public class PostRepoImp implements IPostRepo{
 
     List<Post> postList;
 
+    int countId;
+
     public PostRepoImp(List<Product> postList) {
         this.postList = new ArrayList<>();
+        this.countId = 4;
         loadPosts();
     }
 
     @Override
     public void savePost(Post post) {
+        post.setPostId(this.getCountId());
         this.postList.add(post);
+
+        this.setCountId(getCountId()+1);
     }
 
     @Override
@@ -36,6 +42,13 @@ public class PostRepoImp implements IPostRepo{
         return postList;
     }
 
+    public int getCountId() {
+        return countId;
+    }
+
+    public void setCountId(int count) {
+        this.countId = count;
+    }
 
     private void loadPosts()  {
         try{

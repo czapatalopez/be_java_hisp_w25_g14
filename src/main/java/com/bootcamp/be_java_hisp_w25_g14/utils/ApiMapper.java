@@ -33,7 +33,6 @@ public class ApiMapper {
 
         PostDto postDto = new PostDto();
 
-        postDto.setPost_id(post.getPostId());
         postDto.setUser_id(post.getUserId());
         postDto.setDate(post.getDate());
         postDto.setProduct(convertToProductDto(post.getProduct()));
@@ -47,8 +46,7 @@ public class ApiMapper {
     public static Post convertToPostEntity(PostDto postDto){
 
         Post post = new Post();
-
-        post.setPostId(postDto.getPost_id());
+        
         post.setUserId(postDto.getUser_id());
         post.setDate(postDto.getDate());
         post.setProduct(convertToProductEntity(postDto.getProduct()));

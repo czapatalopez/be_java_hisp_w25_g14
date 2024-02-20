@@ -17,7 +17,6 @@ import java.util.Locale;
 public class PostDto {
 
     Integer user_id;
-    Integer post_id;
     String date;
     ProductDto product;
     Integer category;
