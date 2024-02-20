@@ -15,7 +15,7 @@ import java.util.Locale;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class PostDto {
-
+    Integer post_id;
     Integer user_id;
     String date;
     ProductDto product;
