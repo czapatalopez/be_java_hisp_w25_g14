@@ -1,25 +1,19 @@
 package com.bootcamp.be_java_hisp_w25_g14.dto;
 
-import com.bootcamp.be_java_hisp_w25_g14.entity.Product;
+import com.bootcamp.be_java_hisp_w25_g14.entity.Post;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.experimental.FieldDefaults;
 
-import java.time.LocalDate;
-import java.util.Locale;
+import java.util.List;
 
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class PostDto {
-    Integer post_id;
+public class UserFollowedPostDto {
     Integer user_id;
-    String date;
-    ProductDto product;
-    Integer category;
-    Double price;
-
+    List<PostDto> posts;
 }

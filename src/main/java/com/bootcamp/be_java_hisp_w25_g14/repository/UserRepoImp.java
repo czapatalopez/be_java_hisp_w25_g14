@@ -1,9 +1,8 @@
 package com.bootcamp.be_java_hisp_w25_g14.repository;
 
-import com.bootcamp.be_java_hisp_w25_g14.dto.UserDto;
-import com.bootcamp.be_java_hisp_w25_g14.dto.userDataDto;
+import com.bootcamp.be_java_hisp_w25_g14.dto.UserDataDto;
 import com.bootcamp.be_java_hisp_w25_g14.entity.User;
-import com.bootcamp.be_java_hisp_w25_g14.exceptions.NoFoundException;
+import com.bootcamp.be_java_hisp_w25_g14.exceptions.NotFoundException;
 import com.bootcamp.be_java_hisp_w25_g14.exceptions.FollowException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -13,6 +12,7 @@ import org.springframework.util.ResourceUtils;
 import java.io.File;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -26,6 +26,30 @@ public class UserRepoImp implements IUserRepo {
         loadUsers();
     }
 
+    @Override
+    public List<User> listSellersFollowers(int id, String order) {
+        Optional<User> optionalSellers = userList.stream().filter(x -> x.getUserId() == id && x.getIsSeller() == true).findFirst();
+
+        if (optionalSellers.isEmpty()){
+
+            throw new NotFoundException("Seller not found ");
+        }
+
+        User seller = optionalSellers.get();
+        List<User> followers = new ArrayList<>();
+        for(Integer key : seller.getFollowers()){
+            Optional<User> user = this.userList.stream().filter(user1 -> user1.getUserId().equals(key)).findFirst();
+            if (user.isPresent())
+                followers.add(user.get());
+        }
+
+        if (order != null && order.equalsIgnoreCase("name_asc"))
+            return followers.stream().sorted(Comparator.comparing(User::getUserName)).toList();
+        else
+            return followers.stream().sorted(Comparator.comparing(User::getUserName).reversed()).toList();
+
+    }
+
 
     @Override
     public void addFollower(Integer userId, Integer userIdToFollow) {
@@ -36,7 +60,7 @@ public class UserRepoImp implements IUserRepo {
         Optional<User> toFollow = this.userList.stream().filter(user -> user.getUserId().equals(userIdToFollow)).findFirst();
 
         validateIfUserExists(follower,"Unable to find user");
-        validateIfUserExists(follower,"Unable to find user to follow");
+        validateIfUserExists(toFollow,"Unable to find user to follow");
         validateIsSeller(toFollow.get());
         if(follower.get().getFollowed().contains(userIdToFollow) || toFollow.get().getFollowers().contains(userId))
             throw new FollowException("Already follow");
@@ -52,7 +76,7 @@ public class UserRepoImp implements IUserRepo {
         Optional<User> toFollow = this.userList.stream().filter(user -> user.getUserId().equals(userIdToUnfollow)).findFirst();
 
         validateIfUserExists(follower,"Unable to find user");
-        validateIfUserExists(follower,"Unable to find user to follow");
+        validateIfUserExists(toFollow,"Unable to find user to follow");
 
         if(!follower.get().getFollowed().contains(userIdToUnfollow) || !toFollow.get().getFollowers().contains(userId))
             throw new FollowException("Can't unfollow, You don't follow this user");
@@ -63,24 +87,24 @@ public class UserRepoImp implements IUserRepo {
 
     private void validateIfUserExists(Optional<User> user, String message){
         if (user.isEmpty()){
-            throw  new NoFoundException(message);
+            throw  new NotFoundException(message);
         }
     }
     @Override
-    public List<userDataDto> getFollowed(Integer userId){
-        List<userDataDto> followedUsers = new ArrayList<>();
+    public List<UserDataDto> getFollowed(Integer userId){
+        List<UserDataDto> followedUsers = new ArrayList<>();
         Optional<User> user = findUserById(userId);
         if(user.isPresent()){
             List<Integer> followedList = user.get().getFollowed();
             if(followedList.isEmpty()){
-                throw new NoFoundException("This user have no followed");
+                throw new NotFoundException("This user have no followed");
             }
             for(Integer followedId : followedList){
                     Optional<User> followedUser = this.userList.stream()
                         .filter(usr -> usr.getUserId().equals(followedId))
                         .findFirst();
                     if(followedUser.isPresent()){
-                        userDataDto followedUserDto = new userDataDto(
+                        UserDataDto followedUserDto = new UserDataDto(
                                 followedUser.get().getUserId(),
                                 followedUser.get().getUserName());
                         followedUsers.add(followedUserDto);
@@ -88,7 +112,7 @@ public class UserRepoImp implements IUserRepo {
             }
             return followedUsers;
         }
-        throw  new NoFoundException("Unable to find user");
+        throw  new NotFoundException("Unable to find user");
 
     }
 

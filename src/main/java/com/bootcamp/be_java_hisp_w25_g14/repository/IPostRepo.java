@@ -9,6 +9,7 @@ public interface IPostRepo {
 
     void savePost(Post post);
     List<Post> getAllPosts();
+    List<Post> getPostsById(Integer id);
 
 
 
