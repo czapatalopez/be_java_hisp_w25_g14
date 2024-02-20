@@ -43,7 +43,7 @@ public class UserRepoImp implements IUserRepo {
                 followers.add(user.get());
         }
 
-        if (order.equalsIgnoreCase("name_asc"))
+        if (order != null && order.equalsIgnoreCase("name_asc"))
             return followers.stream().sorted(Comparator.comparing(User::getUserName)).toList();
         else
             return followers.stream().sorted(Comparator.comparing(User::getUserName).reversed()).toList();

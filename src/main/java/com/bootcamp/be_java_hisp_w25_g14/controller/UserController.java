@@ -14,7 +14,7 @@ public class UserController {
 
     @GetMapping("/{id}/followers/list")
     public ResponseEntity<?> listSellersFollower(@PathVariable int id,
-                                                  @RequestParam String order){
+                                                  @RequestParam(required = false) String order){
 
 
         return new ResponseEntity<>(this.userService.listSellersFollowers(id, order), HttpStatus.OK);
