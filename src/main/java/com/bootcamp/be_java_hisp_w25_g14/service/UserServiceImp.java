@@ -1,6 +1,8 @@
 package com.bootcamp.be_java_hisp_w25_g14.service;
 
+import com.bootcamp.be_java_hisp_w25_g14.dto.SellerAvgPriceDto;
 import com.bootcamp.be_java_hisp_w25_g14.dto.UserFollowersCountDto;
+import com.bootcamp.be_java_hisp_w25_g14.entity.Post;
 import com.bootcamp.be_java_hisp_w25_g14.entity.User;
 import com.bootcamp.be_java_hisp_w25_g14.exceptions.FollowException;
 import com.bootcamp.be_java_hisp_w25_g14.exceptions.NotFoundException;
@@ -9,7 +11,9 @@ import com.bootcamp.be_java_hisp_w25_g14.dto.UserDataDto;
 import com.bootcamp.be_java_hisp_w25_g14.entity.User;
 import com.bootcamp.be_java_hisp_w25_g14.exceptions.NotFoundException;
 import com.bootcamp.be_java_hisp_w25_g14.exceptions.NotSellerException;
+import com.bootcamp.be_java_hisp_w25_g14.repository.IPostRepo;
 import com.bootcamp.be_java_hisp_w25_g14.repository.IUserRepo;
+import com.bootcamp.be_java_hisp_w25_g14.repository.PostRepoImp;
 import com.bootcamp.be_java_hisp_w25_g14.utils.ApiMapper;
 import org.springframework.stereotype.Service;
 
@@ -21,13 +25,15 @@ import java.util.List;
 @Service
 public class UserServiceImp implements IUserService {
 
-    private IUserRepo userRepo;
+    private final IUserRepo userRepo;
+    private final IPostRepo postRepo;
 
-    public UserServiceImp(IUserRepo userRepo) {
+    public UserServiceImp(IUserRepo userRepo, PostRepoImp postRepoImp) {
         this.userRepo = userRepo;
+        this.postRepo = postRepoImp;
     }
 
-    public FollowedListResponseDto listSellersFollowers(int id,String order){
+    public FollowedListResponseDto listSellersFollowers(int id, String order){
         Optional<User> userFollower = userRepo.findUserById(id);
 
         if (userFollower.isEmpty()) throw new NotFoundException("The user does not exists");
@@ -61,8 +67,6 @@ public class UserServiceImp implements IUserService {
 
     }
 
-
-
     @Override
     public FollowedListResponseDto getFollowedByUser(Integer userId){
         List<UserDataDto> userFollowed = this.userRepo.getFollowed(userId);
@@ -73,4 +77,44 @@ public class UserServiceImp implements IUserService {
                 userFollowed
         )).orElse(null);
     }
+
+    /*
+    Trabajo individual
+    -Obtener el precio promedio de los posts de un vendedor
+     */
+    @Override
+    public SellerAvgPriceDto getAvgPriceById(Integer id) {
+        /*
+            Obtenemos el usuario con su ID y verificamos si existe
+         */
+        Optional<User> user = userRepo.findUserById(id);
+        if(user.isEmpty()) throw new NotFoundException("There is no user with this id");
+
+        /*
+            Obtenemos los posts del usuario y verificamos si tiene posts
+         */
+        List<Post> userPosts = postRepo.getPostsById(id);
+        if(userPosts.isEmpty()) throw new NotFoundException("The user has no posts");
+
+        /*
+        Obtenemos la cantidad de posts
+         */
+        Integer postCount = userPosts.size();
+
+        /*
+        Obtenemos el promedio de los posts mediante un Stream y lambda
+         */
+        Double avgPostPrice = userPosts.stream()
+                .mapToDouble(Post::getPrice)
+                .average()
+                .orElse(0.0);
+
+        return new SellerAvgPriceDto(
+                id,
+                user.get().getUserName(),
+                postCount,
+                avgPostPrice
+        );
+    }
+
 }

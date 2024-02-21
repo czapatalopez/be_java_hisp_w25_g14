@@ -36,7 +36,12 @@ public class ExceptionConfig {
     }
 
     @ExceptionHandler({NoHandlerFoundException.class})
-    public ResponseEntity<?> noResourceFound(NoHandlerFoundException ex,  HttpServletRequest httpServletRequest){
+    public ResponseEntity<?> noResourceFound(NoHandlerFoundException ex){
         return ResponseEntity.status(404).body(new MessageDto("Endpoint No Found", ex.getMessage()));
+    }
+
+    @ExceptionHandler({InvalidRequestException.class})
+    public ResponseEntity<?> invalidException(InvalidRequestException ex){
+        return ResponseEntity.status(400).body(new MessageDto("Invalid Request", ex.getMessage()));
     }
 }

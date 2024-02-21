@@ -45,4 +45,19 @@ public class UserController {
     public ResponseEntity<?> getUserFollowersCount(@PathVariable Integer userId) {
         return new ResponseEntity<>(this.userService.getUserFollowersCount(userId),HttpStatus.OK);
     }
+
+    /*
+        Trabajo individual - US0012
+        -Obtener el promedio de precios de un vendedor
+
+        METHOD: GET
+        PATH VARIABLE: Int UserID
+        RETURN: {int userId, String userName, int numberOfPosts, Double avgPrice}
+        RESPONSE: 200
+     */
+    @GetMapping("/{userId}/price/avg")
+    public ResponseEntity<?> getAvgPriceById(@PathVariable Integer userId){
+        return new ResponseEntity<>(this.userService.getAvgPriceById(userId),HttpStatus.OK);
+    }
+
 }
